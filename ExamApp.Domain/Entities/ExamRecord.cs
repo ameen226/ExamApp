@@ -10,7 +10,7 @@ namespace ExamApp.Domain.Entities
     {
         public int Id { get; set; }
         public decimal Score { get; set; }
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
         public Student Student { get; set; }
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }

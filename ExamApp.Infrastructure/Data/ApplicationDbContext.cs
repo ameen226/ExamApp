@@ -1,4 +1,6 @@
 ﻿using ExamApp.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -37,7 +39,13 @@ namespace ExamApp.Infrastructure.Data
                 .HasOne(q => q.RightAnswer)
                 .WithMany()
                 .HasForeignKey(q => q.RightAnswerId)
-                .OnDelete(DeleteBehavior.Restrict); ;
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Student>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Student>(s => s.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
