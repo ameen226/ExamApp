@@ -1,4 +1,5 @@
 ﻿using ExamApp.Application.Dtos;
+using ExamApp.Application.Dtos.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ExamApp.Application.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<AuthResponse> RegisterAync(RegisterRequest req);
-        Task<AuthResponse> LoginAsync(LoginRequest req);
+        Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
+        Task<AuthResponseDto> LoginAsync(LoginDto loginDto);
     }
 }

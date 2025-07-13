@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamApp.Application.Dtos
+namespace ExamApp.Application.Dtos.Auth
 {
-    public class LoginRequest
+    public class LoginDto
     {
         public string Email { get; set; }
         public string Password { get; set; }
-
     }
 }
