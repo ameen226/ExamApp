@@ -34,9 +34,31 @@ namespace ExamApp.Infrastructure.Services
             _config = config;
         }
 
-        public Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
+        public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+
+            if (user == null || user.LockoutEnd != null)
+            {
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Errors = new List<string> { "Invalid credentials" }
+                };
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (!result.Succeeded)
+            {
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Errors = new List<string> { "Invalid credentials" }
+                };
+            }
+
+            return await GenerateAuthResponse(user);
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
@@ -44,7 +66,8 @@ namespace ExamApp.Infrastructure.Services
             var user = new IdentityUser
             {
                 Email = dto.Email,
-                UserName = dto.Email.Substring(0, dto.Email.IndexOf('@'))
+                UserName = dto.Email.Substring(0, dto.Email.IndexOf('@')),
+                LockoutEnabled = true
             };
 
 
