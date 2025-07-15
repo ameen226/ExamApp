@@ -1,4 +1,5 @@
-﻿using ExamApp.Domain.Enums;
+﻿using ExamApp.Application.Dtos.Answer;
+using ExamApp.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamApp.Application.Dtos
+namespace ExamApp.Application.Dtos.Question
 {
     public interface CreateQuestionDto
     {

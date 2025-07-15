@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamApp.Application.Dtos
+namespace ExamApp.Application.Dtos.ExamConfiguration
 {
     public class CreateExamConfigurationDto
     {

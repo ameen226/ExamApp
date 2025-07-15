@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamApp.Application.Dtos
+namespace ExamApp.Application.Dtos.Subject
 {
-    public class AnswerDto
+    public class UpdateSubjectDto
     {
         public int Id { get; set; }
-        public string Text { get; set; }
-        public bool IsChosen { get; set; }
+        public string Name { get; set; }
     }
 }
