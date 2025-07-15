@@ -1,4 +1,4 @@
-﻿using ExamApp.Application.Dtos;
+﻿using ExamApp.Application.Dtos.Question;
 using ExamApp.Domain.Entities;
 using System;
 using System.Collections.Generic;

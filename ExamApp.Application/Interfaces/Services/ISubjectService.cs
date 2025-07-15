@@ -1,4 +1,5 @@
-﻿using ExamApp.Application.Dtos;
+﻿using ExamApp.Application.Dtos.ExamConfiguration;
+using ExamApp.Application.Dtos.Subject;
 using ExamApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace ExamApp.Application.Interfaces.Services
     {
         Task<IEnumerable<SubjectDto>> GetAllSubjectsAsync();
         Task<SubjectDto> GetSubjectByIdAsync(int subjectId);
-        Task<ExamConfigurationDto> GetSubjectExamConfiguration(int subjectId);
-        Task CreateSubjectExamConfiguration(CreateExamConfigurationDto createDto);
-
+        Task<ExamConfigurationDto> GetSubjectExamConfigurationAsync(int subjectId);
+        Task<bool> CreateSubjectExamConfigurationAsync(CreateExamConfigurationDto createDto);
+        Task<bool> UpdateSubjectAsync(UpdateSubjectDto dto);
     }
 }

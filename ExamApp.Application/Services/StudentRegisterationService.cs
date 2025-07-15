@@ -1,5 +1,5 @@
-﻿using ExamApp.Application.Dtos;
-using ExamApp.Application.Dtos.Auth;
+﻿using ExamApp.Application.Dtos.Auth;
+using ExamApp.Application.Dtos.Student;
 using ExamApp.Application.Interfaces.Services;
 using System;
 using System.Collections.Generic;

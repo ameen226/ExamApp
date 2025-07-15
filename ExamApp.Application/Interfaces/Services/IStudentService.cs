@@ -1,5 +1,5 @@
-﻿using ExamApp.Application.Dtos;
-using ExamApp.Application.Dtos.Auth;
+﻿using ExamApp.Application.Dtos.Auth;
+using ExamApp.Application.Dtos.Student;
 using ExamApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,8 +13,8 @@ namespace ExamApp.Application.Interfaces.Services
     {
         Task<StudentDto> GetStudentByIdAsyn(string studentId);
         Task<IEnumerable<StudentDto>> GetAllStudentsAsyn();
-        Task DectivateStudentAsync(string studentId);
-        Task ActivateStudentAsync(string studentId);
-        Task AddStudentAsync(CreateStudentDto dto);
+        Task<bool> DectivateStudentAsync(string studentId);
+        Task<bool> ActivateStudentAsync(string studentId);
+        Task<bool> AddStudentAsync(CreateStudentDto dto);
     }
 }

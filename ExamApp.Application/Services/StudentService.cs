@@ -1,5 +1,5 @@
-﻿using ExamApp.Application.Dtos;
-using ExamApp.Application.Dtos.Auth;
+﻿using ExamApp.Application.Dtos.Auth;
+using ExamApp.Application.Dtos.Student;
 using ExamApp.Application.Interfaces.Services;
 using ExamApp.Domain.Entities;
 using ExamApp.Domain.Interfaces;
@@ -20,8 +20,7 @@ namespace ExamApp.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-
-        public Task ActivateStudentAsync(string studentId)
+        public Task<bool> ActivateStudentAsync(string studentId)
         {
             throw new NotImplementedException();
         }
@@ -40,7 +39,7 @@ namespace ExamApp.Application.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task DectivateStudentAsync(string studentId)
+        public Task<bool> DectivateStudentAsync(string studentId)
         {
             throw new NotImplementedException();
         }
@@ -51,6 +50,11 @@ namespace ExamApp.Application.Services
         }
 
         public Task<StudentDto> GetStudentByIdAsyn(string studentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IStudentService.AddStudentAsync(CreateStudentDto dto)
         {
             throw new NotImplementedException();
         }
