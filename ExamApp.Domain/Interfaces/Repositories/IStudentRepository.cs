@@ -9,7 +9,7 @@ namespace ExamApp.Domain.Interfaces.Repositories
 {
     public interface IStudentRepository
     {
-        Task<Student> GetByIdAsync(int id);
+        Task<Student> GetByIdAsync(string id);
         Task<IEnumerable<Student>> GetAllAsync();
         Task AddAsync(Student student);
         void Update(Student student);
