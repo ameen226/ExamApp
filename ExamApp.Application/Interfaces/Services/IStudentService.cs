@@ -1,4 +1,5 @@
 ﻿using ExamApp.Application.Dtos;
+using ExamApp.Application.Dtos.Auth;
 using ExamApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,6 @@ namespace ExamApp.Application.Interfaces.Services
         Task<IEnumerable<StudentDto>> GetAllStudentsAsyn();
         Task DectivateStudentAsync(string studentId);
         Task ActivateStudentAsync(string studentId);
-
+        Task AddStudentAsync(CreateStudentDto dto);
     }
 }

@@ -10,18 +10,20 @@ namespace ExamApp.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IStudentRegisterationService _studentRegisterationService;
 
-
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,
+            IStudentRegisterationService studentRegisterationService)
         {
             _authService = authService;
+            _studentRegisterationService = studentRegisterationService;
         }
 
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var response = await _authService.RegisterAsync(dto);
+            var response = await _studentRegisterationService.RegisterStudentAsync(dto);
             return Ok(response);
         }
 

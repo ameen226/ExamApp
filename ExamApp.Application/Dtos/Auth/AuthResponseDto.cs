@@ -9,6 +9,7 @@ namespace ExamApp.Application.Dtos.Auth
 {
     public class AuthResponseDto
     {
+        public string Id { get; set; }
         public bool Success { get; set; }
         public string Token { get; set; }
         public string Email { get; set; }

@@ -80,7 +80,7 @@ namespace ExamApp.Infrastructure.Services
                 };
             }
 
-            var result = await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user, dto.Password);
 
             if (!result.Succeeded)
             {
@@ -90,6 +90,9 @@ namespace ExamApp.Infrastructure.Services
                     Errors = result.Errors.Select(e => e.Description).ToList()
                 };
             }
+
+            if (!await _roleManager.RoleExistsAsync(Role.Student.ToString()))
+                await _roleManager.CreateAsync(new IdentityRole(Role.Student.ToString()));
 
             await _userManager.AddToRoleAsync(user, Role.Student.ToString());
 
@@ -123,6 +126,7 @@ namespace ExamApp.Infrastructure.Services
 
             return new AuthResponseDto
             {
+                Id = user.Id,
                 Success = true,
                 Email = user.Email,
                 Role = role,

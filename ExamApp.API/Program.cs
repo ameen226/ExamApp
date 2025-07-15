@@ -1,6 +1,11 @@
 
 using ExamApp.Application.Interfaces.Services;
-using ExamApp.Infrastructure.Data;
+using ExamApp.Application.Services;
+using ExamApp.Domain.Interfaces;
+using ExamApp.Domain.Interfaces.Repositories;
+using ExamApp.Infrastructure.Persistence;
+using ExamApp.Infrastructure.Persistence.Data;
+using ExamApp.Infrastructure.Persistence.Repositories;
 using ExamApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +29,12 @@ namespace ExamApp.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<IStudentRegisterationService, StudentRegisterationService>();
+
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
