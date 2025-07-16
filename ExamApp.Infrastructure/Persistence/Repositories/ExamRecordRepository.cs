@@ -1,8 +1,6 @@
-﻿using ExamApp.Application.Dtos;
-using ExamApp.Domain.Entities;
+﻿using ExamApp.Domain.Entities;
 using ExamApp.Domain.Interfaces.Repositories;
 using ExamApp.Infrastructure.Persistence.Data;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Infrastructure.Persistence.Repositories
 {
-    public class StudentRepository : GenericRepository<Student>, IStudentRepository
+    public class ExamRecordRepository : GenericRepository<ExamRecord>, IExamRecordRepository
     {
-        public StudentRepository(ApplicationDbContext db) : base(db)
+        public ExamRecordRepository(ApplicationDbContext db) : base(db)
         {
 
         }
-        
     }
 }

@@ -10,38 +10,16 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Infrastructure.Persistence.Repositories
 {
-    public class SubjectRepository : ISubjectRepository
+    public class SubjectRepository : GenericRepository<Subject>, ISubjectRepository
     {
-        private readonly ApplicationDbContext _db;
-
-        public SubjectRepository(ApplicationDbContext db)
+        public SubjectRepository(ApplicationDbContext db) : base(db)
         {
-            _db = db;
+
         }
 
-        public async Task<Subject> GetByIdAsync(int id)
+        public async Task<bool> SubjectExistsByName(string name)
         {
-            return await _db.Subjects.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<Subject>> GetAllAsync()
-        {
-            return await _db.Subjects.ToListAsync();
-        }
-
-        public async Task AddAsync(Subject subject)
-        {
-            await _db.Subjects.AddAsync(subject);
-        }
-
-        public void Remove(Subject subject)
-        {
-            _db.Subjects.Remove(subject);
-        }
-
-        public void Update(Subject subject)
-        {
-            _db.Subjects.Update(subject);
+            return await _db.Subjects.AnyAsync(s => s.Name.ToLower() == name.ToLower());
         }
     }
 }

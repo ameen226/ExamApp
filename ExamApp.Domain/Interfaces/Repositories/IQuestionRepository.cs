@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Domain.Interfaces.Repositories
 {
-    public interface IQuestionRepository
+    public interface IQuestionRepository : IGenericRepository<Question>
     {
-        Task<Question> GetByIdAsync(int id);
-        Task<IEnumerable<Question>> GetAllAsync();
-        Task AddAsync(Question question);
-        void Update(Question question);
-        void Remove(Question question);
-
     }
 }
