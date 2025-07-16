@@ -22,18 +22,26 @@ namespace ExamApp.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+
+
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<IStudentRegisterationService, StudentRegisterationService>();
+            builder.Services.AddScoped<ISubjectService, SubjectService>();
 
+            builder.Services.AddScoped<IExamConfigurationRepository, ExamConfigurationRepository>();
+            builder.Services.AddScoped<IAnswerRepostiory, AnswerRepository>();
+            builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+            builder.Services.AddScoped<IExamRecordRepository, ExamRecordRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

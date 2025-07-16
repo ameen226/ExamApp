@@ -10,7 +10,7 @@ namespace ExamApp.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Question> Questions { get; set; } = new List<Question>();
-        public ICollection<Student> Students { get; set; } = new List<Student>();
+        public ICollection<Question>? Questions { get; set; } = new List<Question>();
+        public ICollection<Student>? Students { get; set; } = new List<Student>();
     }
 }

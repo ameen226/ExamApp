@@ -1,4 +1,5 @@
-﻿using ExamApp.Application.Dtos.ExamConfiguration;
+﻿using ExamApp.Application.Common.Models;
+using ExamApp.Application.Dtos.ExamConfiguration;
 using ExamApp.Application.Dtos.Subject;
 using ExamApp.Domain.Entities;
 using System;
@@ -11,10 +12,11 @@ namespace ExamApp.Application.Interfaces.Services
 {
     public interface ISubjectService
     {
-        Task<IEnumerable<SubjectDto>> GetAllSubjectsAsync();
-        Task<SubjectDto> GetSubjectByIdAsync(int subjectId);
-        Task<ExamConfigurationDto> GetSubjectExamConfigurationAsync(int subjectId);
-        Task<bool> CreateSubjectExamConfigurationAsync(CreateExamConfigurationDto createDto);
-        Task<bool> UpdateSubjectAsync(UpdateSubjectDto dto);
+        Task<Response<IEnumerable<SubjectDto>>> GetAllSubjectsAsync();
+        Task<Response<SubjectDto?>> GetSubjectByIdAsync(int subjectId);
+        Task<Response<ExamConfigurationDto>> GetSubjectExamConfigurationAsync(int subjectId);
+        Task<Response<object>> CreateSubjectExamConfigurationAsync(CreateExamConfigurationDto createDto);
+        Task<Response<object>> UpdateSubjectAsync(UpdateSubjectDto dto);
+        Task<Response<object>> CreateSubjectAsync(CreateSubjectDto dto);
     }
 }
