@@ -1,6 +1,7 @@
 ﻿using ExamApp.Application.Dtos.Auth;
 using ExamApp.Application.Interfaces.Services;
 using ExamApp.Domain.Enums;
+using ExamApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -20,16 +21,19 @@ namespace ExamApp.Infrastructure.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
 
 
         public AuthService(UserManager<IdentityUser> userManager, 
             RoleManager<IdentityRole> roleManager,
             IConfiguration config,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
             _signInManager = signInManager;
             _config = config;
         }
@@ -38,12 +42,22 @@ namespace ExamApp.Infrastructure.Services
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            if (user == null || user.LockoutEnd != null)
+            if (user == null)
             {
                 return new AuthResponseDto
                 {
                     Success = false,
                     Errors = new List<string> { "Invalid credentials" }
+                };
+            }
+            var student = await _unitOfWork.Students.GetByIdAsync(user.Id);
+
+            if (student == null || !student.Enabled)
+            {
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Errors = new List<string> { "Your account is disabled" }
                 };
             }
 

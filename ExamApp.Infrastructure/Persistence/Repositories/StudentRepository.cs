@@ -17,6 +17,5 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
         {
 
         }
-        
     }
 }

@@ -14,8 +14,7 @@ namespace ExamApp.Application.Interfaces.Services
     {
         Task<Response<StudentDto>> GetStudentByIdAsyn(string studentId);
         Task<Response<IEnumerable<StudentDto>>> GetAllStudentsAsyn();
-        Task<Response<bool>> DectivateStudentAsync(string studentId);
-        Task<Response<bool>> ActivateStudentAsync(string studentId);
+        Task<Response<object>> UpdateStudentStatusAsync(string studentId, bool enabled);
         Task AddStudentAsync(CreateStudentDto dto);
     }
 }

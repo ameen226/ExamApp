@@ -35,6 +35,12 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
             return await _dbSet.FindAsync(id);
         }
 
+        public async Task<T> GetByIdAsync(string id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+
         public void Remove(T entity)
         {
             _dbSet.Remove(entity);

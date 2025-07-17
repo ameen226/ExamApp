@@ -21,11 +21,6 @@ namespace ExamApp.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<Response<bool>> ActivateStudentAsync(string studentId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task AddStudentAsync(CreateStudentDto dto)
         {
             Student student = new Student()
@@ -40,11 +35,7 @@ namespace ExamApp.Application.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<Response<bool>> DectivateStudentAsync(string studentId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<Response<IEnumerable<StudentDto>>> GetAllStudentsAsyn()
         {
             var students = (await _unitOfWork.Students.GetAllAsync()).ToList();
@@ -68,6 +59,46 @@ namespace ExamApp.Application.Services
             throw new NotImplementedException();
         }
 
-        
+        public async Task<Response<object>> UpdateStudentStatusAsync(string studentId, bool enabled)
+        {
+            var student = await _unitOfWork.Students.GetByIdAsync(studentId);
+
+            if (student == null)
+            {
+                return new Response<object>()
+                {
+                    Success = false,
+                    Errors = ["Student does not exist"]
+                };
+            }
+
+            if (student.Enabled == enabled)
+            {
+                return new Response<object>()
+                {
+                    Success = true,
+                    Message = "Student already has the desired status."
+                };
+            }
+
+            student.Enabled = enabled;
+            _unitOfWork.Students.Update(student);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            if (result <= 0)
+            {
+                return new Response<object>()
+                {
+                    Success = false,
+                    Errors = ["Failed to update student status"]
+                };
+            }
+
+            return new Response<object>()
+            {
+                Success = true,
+            };
+        }
     }
 }
