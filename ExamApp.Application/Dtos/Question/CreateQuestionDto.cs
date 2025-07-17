@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Application.Dtos.Question
 {
-    public interface CreateQuestionDto
+    public class CreateQuestionDto
     {
         [Required]
         public string Text { get; set; }
         public Difficulty Difficulty { get; set; }
-        public int RightAnswerId { get; set; }
-        public int SubjcetId { get; set; }
-        public IEnumerable<CreateAnswerDto> Answers { get; set; }
+        public int CorrectAnswerIndex { get; set; }
+        public int SubjectId { get; set; }
+        public IEnumerable<CreateAnswerDto> AnswersList { get; set; }
     }
 }

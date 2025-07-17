@@ -17,5 +17,14 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
         {
 
         }
+
+        public async Task<IEnumerable<Subject>> GetStudentSubjectsAsync(string studentId)
+        {
+            var subjects = await _db.Students.Where(s => s.Id == studentId)
+                                             .SelectMany(s => s.Subjects)
+                                             .ToListAsync();
+
+            return subjects;
+        }
     }
 }
