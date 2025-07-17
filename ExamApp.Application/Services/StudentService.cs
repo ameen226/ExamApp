@@ -1,6 +1,7 @@
 ﻿using ExamApp.Application.Common.Models;
 using ExamApp.Application.Dtos.Auth;
 using ExamApp.Application.Dtos.Student;
+using ExamApp.Application.Dtos.Subject;
 using ExamApp.Application.Interfaces.Services;
 using ExamApp.Domain.Entities;
 using ExamApp.Domain.Interfaces;
@@ -35,7 +36,11 @@ namespace ExamApp.Application.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        
+        public Task<Response<object>> AddStudentSubjectAsync(string studentId, int subjectId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Response<IEnumerable<StudentDto>>> GetAllStudentsAsyn()
         {
             var students = (await _unitOfWork.Students.GetAllAsync()).ToList();
@@ -52,6 +57,34 @@ namespace ExamApp.Application.Services
                 Success = true,
                 Data = studentsDto
             };
+        }
+
+        public async Task<Response<IEnumerable<SubjectDto>>> GetAllStudentSubjectsAsync(string studentId)
+        {
+            var response = new Response<IEnumerable<SubjectDto>>();
+
+            var student = await _unitOfWork.Students.GetByIdAsync(studentId);
+            if (student == null)
+            {
+                response.Success = false;
+                response.Errors = ["Wrong student id"];
+                return response;
+            }
+
+            var subjects = await _unitOfWork.Students.GetStudentSubjectsAsync(studentId);
+
+            foreach (var subject in subjects)
+            {
+                response.Data.Append(new SubjectDto()
+                {
+                    Id = subject.Id,
+                    Name = subject.Name
+                });
+            }
+
+
+            response.Success = true;
+            return response;
         }
 
         public Task<Response<StudentDto>> GetStudentByIdAsyn(string studentId)

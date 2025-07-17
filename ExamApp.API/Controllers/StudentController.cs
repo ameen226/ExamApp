@@ -34,5 +34,16 @@ namespace ExamApp.API.Controllers
 
             return Ok(res.Message);
         }
+
+        [HttpGet("{id}/subjects")]
+        public async Task<IActionResult> GetAllStudentSubject(string id)
+        {
+            var response = await _studentService.GetAllStudentSubjectsAsync(id);
+
+            if (!response.Success)
+                return BadRequest(response.Errors[0]);
+
+            return Ok(response.Data);
+        }
     }
 }
