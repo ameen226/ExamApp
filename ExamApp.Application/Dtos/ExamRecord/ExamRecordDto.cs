@@ -4,19 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamApp.Domain.Entities
+namespace ExamApp.Application.Dtos.ExamRecord
 {
-    public class ExamRecord
+    public class ExamRecordDto
     {
         public int Id { get; set; }
-        public decimal Score { get; set; }
         public string StudentName { get; set; }
-        public string StudentId { get; set; }
-        public Student Student { get; set; }
         public string SubjectName { get; set; }
-        public int SubjectId { get; set; }
-        public Subject Subject { get; set; }
+        public decimal Score { get; set; }
         public DateTime DateTime { get; set; }
-
     }
 }

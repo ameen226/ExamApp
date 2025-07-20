@@ -45,5 +45,18 @@ namespace ExamApp.API.Controllers
 
             return Ok(response.Data);
         }
+
+
+        [HttpPost("{id}/subjects")]
+        public async Task<IActionResult> AddStudentSubject(string id,[FromBody] AssignSubjectDto dto)
+        {
+            var response = await _studentService.AddStudentSubjectAsync(id, dto.SubjectId);
+
+            if (!response.Success)
+                return BadRequest(response.Errors[0]);
+
+            return Ok(response.Message);
+        }
+
     }
 }

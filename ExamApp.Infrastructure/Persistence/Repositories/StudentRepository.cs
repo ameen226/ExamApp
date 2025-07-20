@@ -26,5 +26,10 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
 
             return subjects;
         }
+
+        public async Task<bool> StudentExists(string studentId)
+        {
+            return await _db.Students.AnyAsync(s => s.Id == studentId);
+        }
     }
 }

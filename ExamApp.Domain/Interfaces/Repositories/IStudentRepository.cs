@@ -10,5 +10,6 @@ namespace ExamApp.Domain.Interfaces.Repositories
     public interface IStudentRepository : IGenericRepository<Student>
     {
         Task<IEnumerable<Subject>> GetStudentSubjectsAsync(string studentId);
+        Task<bool> StudentExists(string studentId);
     }
 }

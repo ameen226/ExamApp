@@ -36,9 +36,42 @@ namespace ExamApp.Application.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task<Response<object>> AddStudentSubjectAsync(string studentId, int subjectId)
+        public async Task<Response<object>> AddStudentSubjectAsync(string studentId, int subjectId)
         {
-            throw new NotImplementedException();
+            var response = new Response<object>();
+
+            var student = await _unitOfWork.Students.GetByIdAsync(studentId);
+
+            if (student == null)
+            {
+                response.Success = false;
+                response.Errors = ["Student does not exist"];
+                return response;
+            }
+
+            var subject = await _unitOfWork.Subjects.GetByIdAsync(subjectId);
+
+            if (subject == null)
+            {
+                response.Success = false;
+                response.Errors = ["Subject does not exist"];
+                return response;
+            }
+
+            student.Subjects.Add(subject);
+
+            _unitOfWork.Students.Update(student);
+            var res = await _unitOfWork.SaveChangesAsync();
+
+            if (res <= 0)
+            {
+                response.Success = false;
+                response.Errors = ["adding failed"];
+                return response;
+            }
+
+            response.Success = true;
+            return response;
         }
 
         public async Task<Response<IEnumerable<StudentDto>>> GetAllStudentsAsyn()
@@ -62,6 +95,7 @@ namespace ExamApp.Application.Services
         public async Task<Response<IEnumerable<SubjectDto>>> GetAllStudentSubjectsAsync(string studentId)
         {
             var response = new Response<IEnumerable<SubjectDto>>();
+            List<SubjectDto> subjectDtos = new List<SubjectDto>();
 
             var student = await _unitOfWork.Students.GetByIdAsync(studentId);
             if (student == null)
@@ -75,7 +109,7 @@ namespace ExamApp.Application.Services
 
             foreach (var subject in subjects)
             {
-                response.Data.Append(new SubjectDto()
+                subjectDtos.Add(new SubjectDto()
                 {
                     Id = subject.Id,
                     Name = subject.Name
@@ -84,6 +118,7 @@ namespace ExamApp.Application.Services
 
 
             response.Success = true;
+            response.Data = subjectDtos;
             return response;
         }
 
