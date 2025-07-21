@@ -1,6 +1,7 @@
 ﻿using ExamApp.Domain.Entities;
 using ExamApp.Domain.Interfaces.Repositories;
 using ExamApp.Infrastructure.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
         public ExamConfigurationRepository(ApplicationDbContext db) : base(db)
         {
 
+        }
+
+        public async Task<ExamConfiguration> GetBySubjectIdAsync(int subjectId)
+        {
+            return await _db.ExamConfigurations.FirstOrDefaultAsync(ex => ex.SubjectId == subjectId);
         }
     }
 }

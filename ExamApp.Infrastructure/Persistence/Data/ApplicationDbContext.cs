@@ -17,6 +17,8 @@ namespace ExamApp.Infrastructure.Persistence.Data
 
         }
 
+        public DbSet<ExamQuestion> ExamQuestions { get; set; }
+        public DbSet<Exam> Exams { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -46,6 +48,12 @@ namespace ExamApp.Infrastructure.Persistence.Data
                 .WithOne()
                 .HasForeignKey<Student>(s => s.Id)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ExamQuestion>()
+                .HasOne(eq => eq.Question)
+                .WithMany()
+                .HasForeignKey(eq => eq.QuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

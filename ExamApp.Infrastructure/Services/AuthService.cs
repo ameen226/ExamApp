@@ -124,7 +124,7 @@ namespace ExamApp.Infrastructure.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role.ToLower())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

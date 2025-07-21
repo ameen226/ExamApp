@@ -4,6 +4,7 @@ using ExamApp.Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250720213805_AddingExamTable")]
+    partial class AddingExamTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace ExamApp.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsChosen")
+                        .HasColumnType("bit");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
@@ -104,35 +110,6 @@ namespace ExamApp.Infrastructure.Migrations
                     b.ToTable("ExamConfigurations");
                 });
 
-            modelBuilder.Entity("ExamApp.Domain.Entities.ExamQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SelectedAnswerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("ExamQuestions");
-                });
-
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamRecord", b =>
                 {
                     b.Property<int>("Id")
@@ -182,6 +159,9 @@ namespace ExamApp.Infrastructure.Migrations
                     b.Property<int>("Difficulty")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ExamId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("RightAnswerId")
                         .HasColumnType("int");
 
@@ -193,6 +173,8 @@ namespace ExamApp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
 
                     b.HasIndex("RightAnswerId");
 
@@ -470,7 +452,7 @@ namespace ExamApp.Infrastructure.Migrations
             modelBuilder.Entity("ExamApp.Domain.Entities.Exam", b =>
                 {
                     b.HasOne("ExamApp.Domain.Entities.Student", "Student")
-                        .WithMany("ExamRecords")
+                        .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -497,29 +479,10 @@ namespace ExamApp.Infrastructure.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("ExamApp.Domain.Entities.ExamQuestion", b =>
-                {
-                    b.HasOne("ExamApp.Domain.Entities.Exam", "Exam")
-                        .WithMany("ExamQuestions")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ExamApp.Domain.Entities.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamRecord", b =>
                 {
                     b.HasOne("ExamApp.Domain.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("ExamRecords")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -537,6 +500,10 @@ namespace ExamApp.Infrastructure.Migrations
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Question", b =>
                 {
+                    b.HasOne("ExamApp.Domain.Entities.Exam", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("ExamId");
+
                     b.HasOne("ExamApp.Domain.Entities.Answer", "RightAnswer")
                         .WithMany()
                         .HasForeignKey("RightAnswerId")
@@ -630,7 +597,7 @@ namespace ExamApp.Infrastructure.Migrations
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Exam", b =>
                 {
-                    b.Navigation("ExamQuestions");
+                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Question", b =>

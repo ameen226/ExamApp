@@ -37,7 +37,9 @@ namespace ExamApp.API
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<IQuestionService, QuestionService>();
             builder.Services.AddScoped<IExamRecordService, ExamRecordService>();
+            builder.Services.AddScoped<IExamService, ExamService>();
 
+            builder.Services.AddScoped<IExamRepository, ExamRepository>();
             builder.Services.AddScoped<IExamConfigurationRepository, ExamConfigurationRepository>();
             builder.Services.AddScoped<IAnswerRepostiory, AnswerRepository>();
             builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
@@ -92,6 +94,11 @@ namespace ExamApp.API
                         Array.Empty<string>()
                     }
                 });
+            });
+
+            builder.Services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
             });
 
             var app = builder.Build();

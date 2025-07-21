@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Domain.Interfaces.Repositories
 {
-    public interface ISubjectRepository : IGenericRepository<Subject>
+    public interface IExamRepository : IGenericRepository<Exam>
     {
-        Task<bool> SubjectExistsByName(string name);
-        Task<Subject> GetByIdWithQuestionsAsync(int id);
+        Task<Exam> GetByIdWithExamQuestionAndQuestionAndAnswers(int id);
     }
 }

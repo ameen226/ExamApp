@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Domain.Entities
 {
-    public class Answer
+    public class ExamQuestion
     {
         public int Id { get; set; }
-        public string Text { get; set; } = string.Empty;
+        public int ExamId { get; set; }
+        public Exam Exam { get; set; }
         public int QuestionId { get; set; }
         public Question Question { get; set; }
+        public int SelectedAnswerId { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }

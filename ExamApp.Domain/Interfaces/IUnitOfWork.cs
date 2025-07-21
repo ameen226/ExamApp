@@ -15,7 +15,7 @@ namespace ExamApp.Domain.Interfaces
         IQuestionRepository Questions { get; }
         IStudentRepository Students { get; }
         ISubjectRepository Subjects { get; }
-
+        IExamRepository Exams { get; }
         Task<int> SaveChangesAsync();
     }
 }

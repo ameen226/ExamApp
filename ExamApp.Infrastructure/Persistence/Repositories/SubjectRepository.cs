@@ -17,6 +17,11 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
 
         }
 
+        public async Task<Subject> GetByIdWithQuestionsAsync(int id)
+        {
+            return await _db.Subjects.Include(s => s.Questions).FirstOrDefaultAsync(s => s.Id == id);
+        }
+
         public async Task<bool> SubjectExistsByName(string name)
         {
             return await _db.Subjects.AnyAsync(s => s.Name.ToLower() == name.ToLower());
