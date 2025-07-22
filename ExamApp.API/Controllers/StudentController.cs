@@ -1,5 +1,6 @@
 ﻿using ExamApp.Application.Dtos.Student;
 using ExamApp.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace ExamApp.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {
+            Console.WriteLine($"Authorization header: {Request.Headers["Authorization"]}");
             var res = await _studentService.GetAllStudentsAsyn();
             return Ok(res.Data);
         }
