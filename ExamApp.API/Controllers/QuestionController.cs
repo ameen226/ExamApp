@@ -1,5 +1,6 @@
 ﻿using ExamApp.Application.Dtos.Question;
 using ExamApp.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,8 @@ namespace ExamApp.API.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> CreateQeustion([FromBody] CreateQuestionDto dto)
         {
             if (dto == null)

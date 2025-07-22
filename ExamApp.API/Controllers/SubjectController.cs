@@ -1,5 +1,6 @@
 ﻿using ExamApp.Application.Dtos.Subject;
 using ExamApp.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace ExamApp.API.Controllers
 
 
         [HttpGet("{id}")]
+
         public async Task<IActionResult> GetSubject(int id)
         {
             var response = await _subjectService.GetSubjectByIdAsync(id);
@@ -26,6 +28,7 @@ namespace ExamApp.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> GetAllSubjects()
         {
             var response = await _subjectService.GetAllSubjectsAsync();
@@ -33,6 +36,8 @@ namespace ExamApp.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDto dto)
         {
             var response = await _subjectService.CreateSubjectAsync(dto);
@@ -44,6 +49,8 @@ namespace ExamApp.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> UpdateSubject(int id, [FromBody] UpdateSubjectDto dto)
         {
             if (id != dto.Id)

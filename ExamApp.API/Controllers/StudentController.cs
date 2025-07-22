@@ -18,6 +18,8 @@ namespace ExamApp.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> GetAllStudents()
         {
             Console.WriteLine($"Authorization header: {Request.Headers["Authorization"]}");
@@ -27,6 +29,8 @@ namespace ExamApp.API.Controllers
 
 
         [HttpPut("{id}/status")]
+        [Authorize(Roles = "admin")]
+
         public async Task<IActionResult> UpdateStatus(string id, [FromBody] UpdateStudentStatusDto dto)
         {
             var res = await _studentService.UpdateStudentStatusAsync(id, dto.Enabled);
@@ -38,6 +42,8 @@ namespace ExamApp.API.Controllers
         }
 
         [HttpGet("{id}/subjects")]
+        [Authorize(Roles = "student")]
+
         public async Task<IActionResult> GetAllStudentSubject(string id)
         {
             var response = await _studentService.GetAllStudentSubjectsAsync(id);
@@ -50,6 +56,8 @@ namespace ExamApp.API.Controllers
 
 
         [HttpPost("{id}/subjects")]
+        [Authorize(Roles = "student")]
+
         public async Task<IActionResult> AddStudentSubject(string id,[FromBody] AssignSubjectDto dto)
         {
             var response = await _studentService.AddStudentSubjectAsync(id, dto.SubjectId);

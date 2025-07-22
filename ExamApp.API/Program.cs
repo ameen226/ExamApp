@@ -13,15 +13,15 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ExamApp.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
 
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -109,6 +109,9 @@ namespace ExamApp.API
             });
 
             var app = builder.Build();
+
+            await DbInitializer.SeedAsync(app.Services);
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
