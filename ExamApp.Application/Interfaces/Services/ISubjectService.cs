@@ -14,8 +14,6 @@ namespace ExamApp.Application.Interfaces.Services
     {
         Task<Response<IEnumerable<SubjectDto>>> GetAllSubjectsAsync();
         Task<Response<SubjectDto?>> GetSubjectByIdAsync(int subjectId);
-        Task<Response<ExamConfigurationDto>> GetSubjectExamConfigurationAsync(int subjectId);
-        Task<Response<object>> CreateSubjectExamConfigurationAsync(CreateExamConfigurationDto createDto);
         Task<Response<object>> UpdateSubjectAsync(UpdateSubjectDto dto);
         Task<Response<object>> CreateSubjectAsync(CreateSubjectDto dto);
     }

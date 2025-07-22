@@ -41,6 +41,9 @@ namespace ExamApp.Infrastructure.Services
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            
 
             if (user == null)
             {
@@ -52,7 +55,7 @@ namespace ExamApp.Infrastructure.Services
             }
             var student = await _unitOfWork.Students.GetByIdAsync(user.Id);
 
-            if (student == null || !student.Enabled)
+            if (role == Role.Student.ToString() && (student == null || !student.Enabled))
             {
                 return new AuthResponseDto
                 {

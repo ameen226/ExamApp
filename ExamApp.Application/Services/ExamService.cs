@@ -61,10 +61,14 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
-            var examQuestions = subject.Questions.Select(q => new ExamQuestion()
+            var examQuestions = subject.Questions.OrderBy(q => Guid.NewGuid())
+                .Take(examConfig.NumberOfQuestions)
+                .Select(q => new ExamQuestion()
             {
                 QuestionId = q.Id,
             }).ToList();
+
+            
 
 
             Exam exam = new Exam()

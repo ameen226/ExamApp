@@ -10,6 +10,5 @@ namespace ExamApp.Application.Dtos.ExamConfiguration
     {
         public TimeSpan Duration { get; set; }
         public int NumberOfQuestions { get; set; }
-        public int SubjectId { get; set; }
     }
 }

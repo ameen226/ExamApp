@@ -3,6 +3,7 @@ using ExamApp.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ExamApp.API.Controllers
 {
@@ -41,12 +42,13 @@ namespace ExamApp.API.Controllers
             return Ok(res.Message);
         }
 
-        [HttpGet("{id}/subjects")]
+        [HttpGet("me/subjects")]
         [Authorize(Roles = "student")]
 
-        public async Task<IActionResult> GetAllStudentSubject(string id)
+        public async Task<IActionResult> GetAllStudentSubject()
         {
-            var response = await _studentService.GetAllStudentSubjectsAsync(id);
+            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _studentService.GetAllStudentSubjectsAsync(studentId);
 
             if (!response.Success)
                 return BadRequest(response.Errors[0]);
@@ -55,12 +57,14 @@ namespace ExamApp.API.Controllers
         }
 
 
-        [HttpPost("{id}/subjects")]
+        [HttpPost("me/subjects")]
         [Authorize(Roles = "student")]
 
-        public async Task<IActionResult> AddStudentSubject(string id,[FromBody] AssignSubjectDto dto)
+        public async Task<IActionResult> AddStudentSubject([FromBody] AssignSubjectDto dto)
         {
-            var response = await _studentService.AddStudentSubjectAsync(id, dto.SubjectId);
+            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var response = await _studentService.AddStudentSubjectAsync(studentId, dto.SubjectId);
 
             if (!response.Success)
                 return BadRequest(response.Errors[0]);

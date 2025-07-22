@@ -58,11 +58,6 @@ namespace ExamApp.Application.Services
 
         }
 
-        public Task<Response<object>> CreateSubjectExamConfigurationAsync(CreateExamConfigurationDto createDto)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Response<IEnumerable<SubjectDto>>> GetAllSubjectsAsync()
         {
             var subjectList = (await _unitOfWork.Subjects.GetAllAsync()).ToList();
@@ -104,11 +99,7 @@ namespace ExamApp.Application.Services
                        
         }
 
-        public Task<Response<ExamConfigurationDto>> GetSubjectExamConfigurationAsync(int subjectId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<Response<object>> UpdateSubjectAsync(UpdateSubjectDto dto)
         {
             var subject = await _unitOfWork.Subjects.GetByIdAsync(dto.Id);

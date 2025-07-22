@@ -38,6 +38,7 @@ namespace ExamApp.API
             builder.Services.AddScoped<IQuestionService, QuestionService>();
             builder.Services.AddScoped<IExamRecordService, ExamRecordService>();
             builder.Services.AddScoped<IExamService, ExamService>();
+            builder.Services.AddScoped<IExamConfigurationService, ExamConfigurationService>();
 
             builder.Services.AddScoped<IExamRepository, ExamRepository>();
             builder.Services.AddScoped<IExamConfigurationRepository, ExamConfigurationRepository>();

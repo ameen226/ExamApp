@@ -24,8 +24,8 @@ namespace ExamApp.API.Controllers
         [HttpPost("/api/me/exam/request")]
         public async Task<IActionResult> RequestExam([FromBody] CreateExamDto dto)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var response = await _examService.RequestExamAsync(dto, userId);
+            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _examService.RequestExamAsync(dto, studentId);
 
             if (!response.Success)
                 return BadRequest(response.Errors);
