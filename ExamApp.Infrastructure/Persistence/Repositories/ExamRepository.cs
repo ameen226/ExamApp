@@ -17,11 +17,18 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
 
         }
 
+        public async Task<bool> ExamExistsAsync(int subjectId)
+        {
+            return await _db.Exams.AnyAsync(e => e.SubjectId == subjectId);
+        }
+
         public async Task<Exam> GetByIdWithExamQuestionAndQuestionAndAnswers(int id)
         {
             return await _db.Exams.Include(e => e.ExamQuestions)
                 .ThenInclude(ex => ex.Question)
                 .ThenInclude(ex => ex.Answers).FirstOrDefaultAsync(e => e.Id == id);
         }
+
+        
     }
 }

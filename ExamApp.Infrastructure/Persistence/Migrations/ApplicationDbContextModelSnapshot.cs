@@ -41,7 +41,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Exam", b =>
@@ -77,7 +77,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Exams");
+                    b.ToTable("Exams", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamConfiguration", b =>
@@ -101,7 +101,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("ExamConfigurations");
+                    b.ToTable("ExamConfigurations", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamQuestion", b =>
@@ -130,7 +130,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("ExamQuestions");
+                    b.ToTable("ExamQuestions", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamRecord", b =>
@@ -168,7 +168,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("ExamRecords");
+                    b.ToTable("ExamRecords", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Question", b =>
@@ -198,7 +198,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Student", b =>
@@ -223,7 +223,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Subject", b =>
@@ -240,7 +240,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -453,7 +453,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectsId");
 
-                    b.ToTable("StudentSubject");
+                    b.ToTable("StudentSubject", (string)null);
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Answer", b =>

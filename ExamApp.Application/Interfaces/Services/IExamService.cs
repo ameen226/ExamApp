@@ -11,5 +11,6 @@ namespace ExamApp.Application.Interfaces.Services
     public interface IExamService
     {
         Task<Response<ExamDto>> RequestExamAsync(CreateExamDto dto, string studentId);
+        Task<Response<object>> SubmitExamAsync(int examId, string studentId, SubmitExamDto dto);
     }
 }

@@ -45,6 +45,13 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
+            if (await _unitOfWork.Exams.ExamExistsAsync(dto.SubjectId))
+            {
+                response.Success = false;
+                response.Errors = ["Exam already requested"];
+                return response;
+            }
+
             var examConfig = await _unitOfWork.ExamConfigurations.GetBySubjectIdAsync(dto.SubjectId);
 
             if (examConfig == null)
@@ -121,6 +128,68 @@ namespace ExamApp.Application.Services
 
             return response;
 
+        }
+
+        public async Task<Response<object>> SubmitExamAsync(int examId, string studentId, SubmitExamDto dto)
+        {
+            Response<object> response = new Response<object>();
+
+            var exam = await _unitOfWork.Exams.GetByIdWithExamQuestionAndQuestionAndAnswers(examId);
+            
+
+            if (exam == null)
+            {
+                response.Success = false;
+                response.Errors = ["Exam does not exist"];
+                return response;
+            }
+
+
+            if (exam.StudentId != studentId)
+            {
+                response.Success = false;
+                response.Errors = ["You are not assigned to this exam"];
+                return response;
+            }
+
+            exam.SubmitedAt = DateTime.UtcNow;
+            exam.Status = ExamStatus.Submitted;
+
+            decimal correctAnswersCount = 0;
+            decimal questionsCount = exam.ExamQuestions.Count;
+
+            foreach (var answer in dto.ExamQeustions)
+            {
+                var examQuestion = exam.ExamQuestions.FirstOrDefault(ex => ex.QuestionId == answer.QuestionId);
+                if (examQuestion == null)
+                {
+                    response.Success = false;
+                    response.Errors = ["Exam question does not exist"];
+                    return response;
+                }
+
+                if (examQuestion.Question.RightAnswerId == answer.SelectedAnswerId)
+                {
+                    examQuestion.IsCorrect = true;
+                    examQuestion.SelectedAnswerId = answer.SelectedAnswerId;
+                    correctAnswersCount++;
+                }
+            }
+
+            exam.Score = (correctAnswersCount / questionsCount) * 100;
+
+            _unitOfWork.Exams.Update(exam);
+            int res = await _unitOfWork.SaveChangesAsync();
+
+            if (res <= 0)
+            {
+                response.Success = false;
+                response.Errors = ["Failed to submit the exam"];
+                return response;
+            }
+
+            response.Success = true;
+            return response;
         }
     }
 }

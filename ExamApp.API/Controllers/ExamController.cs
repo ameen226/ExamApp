@@ -32,5 +32,23 @@ namespace ExamApp.API.Controllers
 
             return Ok(response.Data);
         }
+
+        [Authorize(Roles = "student")]
+        [HttpPost("/api/me/exam/{examId}/submit")]
+        public async Task<IActionResult> SubmitExam(int examId, [FromBody] SubmitExamDto dto)
+        {
+            if (dto == null)
+                return BadRequest();
+
+            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var response = await _examService.SubmitExamAsync(examId, studentId, dto);
+
+            if (!response.Success)
+                return BadRequest(response.Errors[0]);
+
+            return Ok();
+        }
+
     }
 }
