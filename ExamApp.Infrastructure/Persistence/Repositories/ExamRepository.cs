@@ -1,4 +1,5 @@
 ﻿using ExamApp.Domain.Entities;
+using ExamApp.Domain.Enums;
 using ExamApp.Domain.Interfaces.Repositories;
 using ExamApp.Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,18 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
         public async Task<bool> ExamExistsAsync(int subjectId)
         {
             return await _db.Exams.AnyAsync(e => e.SubjectId == subjectId);
+        }
+
+        public async Task<IEnumerable<Exam>> GetExamHistoryForStudentWithSubjectAsync(string studentId)
+        {
+            return await _db.Exams.Where(e => e.StudentId == studentId && e.Status == ExamStatus.Submitted)
+                .Include(e => e.Subject).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Exam>> GetExamHistoriesWithStudentAndSubjectAsync()
+        {
+            return await _db.Exams.Where(e => e.Status == ExamStatus.Submitted).Include(e => e.Student)
+                .Include(e => e.Subject).ToListAsync();
         }
 
         public async Task<Exam> GetByIdWithExamQuestionAndQuestionAndAnswers(int id)

@@ -12,5 +12,7 @@ namespace ExamApp.Application.Interfaces.Services
     {
         Task<Response<ExamDto>> RequestExamAsync(CreateExamDto dto, string studentId);
         Task<Response<object>> SubmitExamAsync(int examId, string studentId, SubmitExamDto dto);
+        Task<Response<IEnumerable<ExamRecordDto>>> GetStudentExamHistoryAsync(string studentId);
+        Task<Response<IEnumerable<ExamRecordDto>>> GetExamHistoriesAsync();
     }
 }

@@ -14,7 +14,6 @@ namespace ExamApp.Infrastructure.Persistence
         public ApplicationDbContext _db { get; set; }
         public IAnswerRepostiory Answers { get; }
         public IExamConfigurationRepository ExamConfigurations { get; }
-        public IExamRecordRepository ExamRecords { get; }
         public IQuestionRepository Questions { get; }
         public IStudentRepository Students { get; }
         public ISubjectRepository Subjects { get; }
@@ -23,11 +22,10 @@ namespace ExamApp.Infrastructure.Persistence
         public UnitOfWork(ApplicationDbContext db, IStudentRepository studentRepository,
             ISubjectRepository subjectRepository, IAnswerRepostiory answerRepostiory, 
             IQuestionRepository questionRepository, IExamConfigurationRepository examConfigurationRepository,
-            IExamRecordRepository examRecordRepository, IExamRepository examRepository)
+            IExamRepository examRepository)
         {
             Answers = answerRepostiory;
             Questions = questionRepository;
-            ExamRecords = examRecordRepository;
             ExamConfigurations = examConfigurationRepository;
             Students = studentRepository;
             Subjects = subjectRepository;

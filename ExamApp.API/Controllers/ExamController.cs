@@ -50,5 +50,29 @@ namespace ExamApp.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpGet("/api/admin/exam/history")]
+        public async Task<IActionResult> GetExamHistories()
+        {
+            var response = await _examService.GetExamHistoriesAsync();
+
+            if (!response.Success)
+                return BadRequest();
+
+            return Ok(response.Data);
+        }
+
+        [Authorize(Roles = "student")]
+        [HttpGet("/api/me/exam/history")]
+        public async Task<IActionResult> GetStudentExamHistory()
+        {
+            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _examService.GetStudentExamHistoryAsync(studentId);
+
+            if (!response.Success)
+                return BadRequest(response.Errors[0]);
+
+            return Ok(response.Data);
+        }
     }
 }

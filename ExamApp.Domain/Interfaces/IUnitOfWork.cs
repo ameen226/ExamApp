@@ -11,7 +11,6 @@ namespace ExamApp.Domain.Interfaces
     {
         IAnswerRepostiory Answers { get; }
         IExamConfigurationRepository ExamConfigurations { get; }
-        IExamRecordRepository ExamRecords { get; }
         IQuestionRepository Questions { get; }
         IStudentRepository Students { get; }
         ISubjectRepository Subjects { get; }

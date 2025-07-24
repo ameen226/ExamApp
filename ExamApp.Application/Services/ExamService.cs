@@ -23,6 +23,81 @@ namespace ExamApp.Application.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<Response<IEnumerable<ExamRecordDto>>> GetExamHistoriesAsync()
+        {
+            var response = new Response<IEnumerable<ExamRecordDto>>();
+            var examsHistories = await _unitOfWork.Exams.GetExamHistoriesWithStudentAndSubjectAsync();
+
+            if (examsHistories == null)
+            {
+                response.Success = true;
+                response.Message = "There is no exams";
+                return response;
+            }
+
+            List<ExamRecordDto> examRecordDtos = new List<ExamRecordDto>();
+
+            foreach (var exam in examsHistories)
+            {
+                examRecordDtos.Add(new ExamRecordDto()
+                {
+                    Id = exam.Id,
+                    StudentName = exam.Student.FirstName + " " + exam.Student.LastName,
+                    StudentEmail = exam.Student.Email,
+                    SubjectName = exam.Subject.Name,
+                    StartedAt = exam.StartedAt,
+                    SubmitedAt = exam.SubmitedAt,
+                    Score = exam.Score
+                });
+            }
+
+            response.Success = true;
+            response.Data = examRecordDtos;
+            return response;
+        }
+
+        public async Task<Response<IEnumerable<ExamRecordDto>>> GetStudentExamHistoryAsync(string studentId)
+        {
+            var response = new Response<IEnumerable<ExamRecordDto>>();
+
+            var student = await _unitOfWork.Students.GetByIdAsync(studentId);
+
+            if (student == null)
+            {
+                response.Success = false;
+                response.Errors = ["Student does not exist"];
+                return response;
+            }
+
+            var examHistory = await _unitOfWork.Exams.GetExamHistoryForStudentWithSubjectAsync(studentId);
+            
+            if (examHistory == null)
+            {
+                response.Success = true;
+                response.Message = "No exam records yet";
+                return response;
+            }
+
+            var examRecordDtos = new List<ExamRecordDto>();
+
+            foreach (var exam in examHistory)
+            {
+                examRecordDtos.Add(new ExamRecordDto()
+                {
+                    Id = exam.Id,
+                    StudentName = student.FirstName + " " + student.LastName,
+                    StudentEmail = student.Email,
+                    SubmitedAt = exam.SubmitedAt,
+                    StartedAt = exam.StartedAt,
+                    SubjectName = exam.Subject.Name,
+                    Score = exam.Score
+                });
+            }
+
+            response.Success = true;
+            response.Data = examRecordDtos;
+            return response;
+        }
 
         public async Task<Response<ExamDto>> RequestExamAsync(CreateExamDto dto, string studentId)
         {

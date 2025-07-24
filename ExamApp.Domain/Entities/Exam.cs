@@ -18,11 +18,11 @@ namespace ExamApp.Domain.Entities
         public Subject Subject { get; set; }
 
         public DateTime StartedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? SubmitedAt { get; set; }
+        public DateTime SubmitedAt { get; set; }
 
         public ExamStatus Status { get; set; } = ExamStatus.InProgress;
 
-        public decimal? Score { get; set; }
+        public decimal Score { get; set; }
 
         public ICollection<ExamQuestion> ExamQuestions { get; set; } = new List<ExamQuestion>();
 

@@ -10,6 +10,8 @@ namespace ExamApp.Domain.Interfaces.Repositories
     public interface IExamRepository : IGenericRepository<Exam>
     {
         Task<Exam> GetByIdWithExamQuestionAndQuestionAndAnswers(int id);
+        Task<IEnumerable<Exam>> GetExamHistoriesWithStudentAndSubjectAsync();
+        Task<IEnumerable<Exam>> GetExamHistoryForStudentWithSubjectAsync(string studentId);
         Task<bool> ExamExistsAsync(int subjectId);
     }
 }

@@ -36,7 +36,6 @@ namespace ExamApp.API
             builder.Services.AddScoped<IStudentRegisterationService, StudentRegisterationService>();
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<IQuestionService, QuestionService>();
-            builder.Services.AddScoped<IExamRecordService, ExamRecordService>();
             builder.Services.AddScoped<IExamService, ExamService>();
             builder.Services.AddScoped<IExamConfigurationService, ExamConfigurationService>();
 
@@ -44,7 +43,6 @@ namespace ExamApp.API
             builder.Services.AddScoped<IExamConfigurationRepository, ExamConfigurationRepository>();
             builder.Services.AddScoped<IAnswerRepostiory, AnswerRepository>();
             builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
-            builder.Services.AddScoped<IExamRecordRepository, ExamRecordRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
