@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +43,12 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
                 .ThenInclude(ex => ex.Answers).FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        
+        public async Task<int> ExamCountAsync(Expression<Func<Exam, bool>>? predicate = null)
+        {
+            if (predicate != null)
+                return await _db.Exams.CountAsync(predicate);
+
+            return await _db.Exams.CountAsync();
+        }
     }
 }

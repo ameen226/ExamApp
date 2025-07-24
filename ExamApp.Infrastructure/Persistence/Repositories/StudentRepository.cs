@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,15 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
                                              .ToListAsync();
 
             return subjects;
+        }
+
+        public async Task<int> StudentCountAsync(Expression<Func<Student, bool>>? predicate = null)
+        {
+            if (predicate != null)
+                return await _db.Students.CountAsync(predicate);
+
+            return await _db.Students.CountAsync();
+
         }
 
         public async Task<bool> StudentExists(string studentId)
