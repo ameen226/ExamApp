@@ -82,7 +82,8 @@ namespace ExamApp.Application.Services
                 Id = s.Id,
                 FirstName = s.FirstName,
                 LastName = s.LastName,
-                Email = s.Email
+                Email = s.Email,
+                Enabled = s.Enabled
             });
 
             return new Response<IEnumerable<StudentDto>>()
