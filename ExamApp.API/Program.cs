@@ -23,6 +23,17 @@ namespace ExamApp.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularClient", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -112,6 +123,7 @@ namespace ExamApp.API
 
             await DbInitializer.SeedAsync(app.Services);
 
+            app.UseCors("AllowAngularClient");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
