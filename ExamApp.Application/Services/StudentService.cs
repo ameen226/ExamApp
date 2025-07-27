@@ -29,7 +29,8 @@ namespace ExamApp.Application.Services
                 Id = dto.Id,
                 FirstName = dto.FirstName,
                 LastName  = dto.LastName,
-                Email = dto.Email
+                Email = dto.Email,
+                Enabled = true
             };
 
             await _unitOfWork.Students.AddAsync(student);

@@ -41,9 +41,6 @@ namespace ExamApp.Infrastructure.Services
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-
-            
 
             if (user == null)
             {
@@ -53,6 +50,9 @@ namespace ExamApp.Infrastructure.Services
                     Errors = new List<string> { "Invalid credentials" }
                 };
             }
+
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
             var student = await _unitOfWork.Students.GetByIdAsync(user.Id);
 
             if (role == Role.Student.ToString() && (student == null || !student.Enabled))
@@ -84,7 +84,6 @@ namespace ExamApp.Infrastructure.Services
             {
                 Email = dto.Email,
                 UserName = dto.Email.Substring(0, dto.Email.IndexOf('@')),
-                LockoutEnabled = true
             };
 
 
@@ -147,6 +146,7 @@ namespace ExamApp.Infrastructure.Services
                 Success = true,
                 Email = user.Email,
                 Role = role,
+                Message = "Registration successfull",
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
             };
         }

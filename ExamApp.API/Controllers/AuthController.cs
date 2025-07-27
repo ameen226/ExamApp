@@ -20,7 +20,7 @@ namespace ExamApp.API.Controllers
         }
 
 
-        [HttpPost("register")]
+        [HttpPost("/api/student/register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
             var response = await _studentRegisterationService.RegisterStudentAsync(dto);
