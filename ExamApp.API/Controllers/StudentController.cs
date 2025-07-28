@@ -1,4 +1,5 @@
-﻿using ExamApp.Application.Dtos.Student;
+﻿using ExamApp.Application.Common.Models;
+using ExamApp.Application.Dtos.Student;
 using ExamApp.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +22,10 @@ namespace ExamApp.API.Controllers
         [HttpGet]
         [Authorize(Roles = "admin")]
 
-        public async Task<IActionResult> GetAllStudents()
+        public async Task<IActionResult> GetAllStudents([FromQuery] PaginationParameters pagination)
         {
             Console.WriteLine($"Authorization header: {Request.Headers["Authorization"]}");
-            var res = await _studentService.GetAllStudentsAsyn();
+            var res = await _studentService.GetAllStudentsAsync(pagination);
             return Ok(res.Data);
         }
 

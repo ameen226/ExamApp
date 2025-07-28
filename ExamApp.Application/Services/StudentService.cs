@@ -75,23 +75,38 @@ namespace ExamApp.Application.Services
             return response;
         }
 
-        public async Task<Response<IEnumerable<StudentDto>>> GetAllStudentsAsyn()
+        public async Task<Response<PagedResult<StudentDto>>> GetAllStudentsAsync(PaginationParameters pagination)
         {
-            var students = (await _unitOfWork.Students.GetAllAsync()).ToList();
-            var studentsDto = students.Select(s => new StudentDto()
+            var response = new Response<PagedResult<StudentDto>>();
+
+
+            var pagedStudents = await _unitOfWork.Students.GetPagedAsync(
+                    pageNumber: pagination.PageNumber,
+                    pageSize: pagination.PageSize
+                );
+
+
+            var studentsDto = pagedStudents.Items.Select(s => new StudentDto()
             {
                 Id = s.Id,
                 FirstName = s.FirstName,
                 LastName = s.LastName,
                 Email = s.Email,
                 Enabled = s.Enabled
-            });
+            }).ToList();
 
-            return new Response<IEnumerable<StudentDto>>()
+            var pageResult = new PagedResult<StudentDto>
             {
-                Success = true,
-                Data = studentsDto
+                TotalCount = pagedStudents.TotalCount,
+                Items = studentsDto,
+                PageSize = pagedStudents.PageSize,
+                PageNumber = pagedStudents.PageNumber
             };
+
+            response.Success = true;
+            response.Data = pageResult;
+
+            return response;
         }
 
         public async Task<Response<IEnumerable<SubjectDto>>> GetAllStudentSubjectsAsync(string studentId)

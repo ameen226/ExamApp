@@ -1,9 +1,11 @@
-﻿using ExamApp.Domain.Interfaces.Repositories;
+﻿using ExamApp.Application.Common.Models;
+using ExamApp.Domain.Interfaces.Repositories;
 using ExamApp.Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +42,25 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
             return await _dbSet.FindAsync(id);
         }
 
+        public async Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize,
+            Expression<Func<T, bool>>? filter = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            int count = await query.CountAsync();
+            var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return new PagedResult<T>()
+            {
+                TotalCount = count,
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
 
         public void Remove(T entity)
         {
