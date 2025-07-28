@@ -13,7 +13,7 @@ namespace ExamApp.Domain.Interfaces.Repositories
         Task<Exam> GetByIdWithExamQuestionAndQuestionAndAnswers(int id);
         Task<IEnumerable<Exam>> GetExamHistoriesWithStudentAndSubjectAsync();
         Task<IEnumerable<Exam>> GetExamHistoryForStudentWithSubjectAsync(string studentId);
-        Task<bool> ExamExistsAsync(int subjectId);
+        Task<bool> ExamExistsAsync(int subjectId, string studentId);
         Task<int> ExamCountAsync(Expression<Func<Exam,bool>>? predicate = null);
     }
 }

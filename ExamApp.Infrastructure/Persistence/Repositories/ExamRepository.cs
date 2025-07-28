@@ -19,9 +19,9 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
 
         }
 
-        public async Task<bool> ExamExistsAsync(int subjectId)
+        public async Task<bool> ExamExistsAsync(int subjectId, string studentId)
         {
-            return await _db.Exams.AnyAsync(e => e.SubjectId == subjectId);
+            return await _db.Exams.AnyAsync(e => e.SubjectId == subjectId && e.StudentId == studentId);
         }
 
         public async Task<IEnumerable<Exam>> GetExamHistoryForStudentWithSubjectAsync(string studentId)

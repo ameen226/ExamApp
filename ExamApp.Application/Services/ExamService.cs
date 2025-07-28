@@ -120,7 +120,7 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
-            if (await _unitOfWork.Exams.ExamExistsAsync(dto.SubjectId))
+            if (await _unitOfWork.Exams.ExamExistsAsync(dto.SubjectId, studentId))
             {
                 response.Success = false;
                 response.Errors = ["Exam already requested"];
