@@ -43,12 +43,17 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
         }
 
         public async Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize,
-            Expression<Func<T, bool>>? filter = null)
+            Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
 
             if (filter != null)
                 query = query.Where(filter);
+            
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
 
             int count = await query.CountAsync();
             var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();

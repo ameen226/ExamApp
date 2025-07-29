@@ -1,4 +1,5 @@
-﻿using ExamApp.Application.Dtos.Exam;
+﻿using ExamApp.Application.Common.Models;
+using ExamApp.Application.Dtos.Exam;
 using ExamApp.Application.Interfaces.Services;
 using ExamApp.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -52,9 +53,9 @@ namespace ExamApp.API.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpGet("/api/admin/exam/history")]
-        public async Task<IActionResult> GetExamHistories()
+        public async Task<IActionResult> GetExamHistories([FromQuery] PaginationParameters pagination)
         {
-            var response = await _examService.GetExamHistoriesAsync();
+            var response = await _examService.GetExamHistoriesPagedAsync(pagination);
 
             if (!response.Success)
                 return BadRequest();

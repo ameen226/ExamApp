@@ -12,7 +12,7 @@ namespace ExamApp.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<PagedResult<T>> GetPagedAsync(int pageNumber,
-            int pageSize, Expression<Func<T, bool>>? filter = null);
+            int pageSize, Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdAsync(int id);
         Task<T> GetByIdAsync(string id);
         Task AddAsync(T entity);

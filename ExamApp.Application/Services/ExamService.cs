@@ -23,21 +23,29 @@ namespace ExamApp.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Response<IEnumerable<ExamRecordDto>>> GetExamHistoriesAsync()
+        public async Task<Response<PagedResult<ExamRecordDto>>> GetExamHistoriesPagedAsync(PaginationParameters pagination)
         {
-            var response = new Response<IEnumerable<ExamRecordDto>>();
-            var examsHistories = await _unitOfWork.Exams.GetExamHistoriesWithStudentAndSubjectAsync();
+            var response = new Response<PagedResult<ExamRecordDto>>();
+            var examsHistories = await _unitOfWork.Exams.GetPagedAsync(pagination.PageNumber,
+                pagination.PageSize,null, e => e.Student, e => e.Subject);
 
-            if (examsHistories == null)
+            if (examsHistories == null || !examsHistories.Items.Any())
             {
                 response.Success = true;
-                response.Message = "There is no exams";
+                response.Message = "No exams found";
+                response.Data = new PagedResult<ExamRecordDto>
+                {
+                    Items = new List<ExamRecordDto>(),
+                    PageNumber = pagination.PageNumber,
+                    PageSize = pagination.PageSize,
+                    TotalCount = 0
+                };
                 return response;
             }
 
             List<ExamRecordDto> examRecordDtos = new List<ExamRecordDto>();
 
-            foreach (var exam in examsHistories)
+            foreach (var exam in examsHistories.Items)
             {
                 examRecordDtos.Add(new ExamRecordDto()
                 {
@@ -52,7 +60,14 @@ namespace ExamApp.Application.Services
             }
 
             response.Success = true;
-            response.Data = examRecordDtos;
+            response.Data = new PagedResult<ExamRecordDto>
+            {
+                Items = examRecordDtos,
+                PageNumber = pagination.PageNumber,
+                PageSize = pagination.PageSize,
+                TotalCount = examsHistories.TotalCount
+            };
+
             return response;
         }
 
