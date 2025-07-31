@@ -65,10 +65,10 @@ namespace ExamApp.API.Controllers
 
         [Authorize(Roles = "student")]
         [HttpGet("/api/me/exam/history")]
-        public async Task<IActionResult> GetStudentExamHistory()
+        public async Task<IActionResult> GetStudentExamHistory([FromQuery] PaginationParameters pagination)
         {
             var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var response = await _examService.GetStudentExamHistoryAsync(studentId);
+            var response = await _examService.GetStudentExamHistoryPagedAsync(pagination, studentId);
 
             if (!response.Success)
                 return BadRequest(response.Errors[0]);

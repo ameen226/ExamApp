@@ -31,7 +31,7 @@ namespace ExamApp.API.Controllers
             if (!response.Success)
                 return BadRequest(response.Errors[0]);
 
-            return Ok(response.Message);
+            return Ok(response);
         }
 
     }

@@ -23,7 +23,9 @@ namespace ExamApp.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Response<PagedResult<ExamRecordDto>>> GetExamHistoriesPagedAsync(PaginationParameters pagination)
+        public async Task<Response<PagedResult<ExamRecordDto>>> GetExamHistoriesPagedAsync(
+            PaginationParameters pagination
+            )
         {
             var response = new Response<PagedResult<ExamRecordDto>>();
             var examsHistories = await _unitOfWork.Exams.GetPagedAsync(pagination.PageNumber,
@@ -71,9 +73,12 @@ namespace ExamApp.Application.Services
             return response;
         }
 
-        public async Task<Response<IEnumerable<ExamRecordDto>>> GetStudentExamHistoryAsync(string studentId)
+        public async Task<Response<PagedResult<ExamRecordDto>>> GetStudentExamHistoryPagedAsync(
+            PaginationParameters pagination,
+            string studentId
+            )
         {
-            var response = new Response<IEnumerable<ExamRecordDto>>();
+            var response = new Response<PagedResult<ExamRecordDto>>();
 
             var student = await _unitOfWork.Students.GetByIdAsync(studentId);
 
@@ -84,9 +89,10 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
-            var examHistory = await _unitOfWork.Exams.GetExamHistoryForStudentWithSubjectAsync(studentId);
+            var examHistory = await _unitOfWork.Exams.GetPagedAsync(pagination.PageNumber,
+                pagination.PageSize, s => s.StudentId == studentId, e => e.Student, e => e.Subject);
             
-            if (examHistory == null)
+            if (examHistory == null || examHistory.Items.Count == 0)
             {
                 response.Success = true;
                 response.Message = "No exam records yet";
@@ -95,7 +101,7 @@ namespace ExamApp.Application.Services
 
             var examRecordDtos = new List<ExamRecordDto>();
 
-            foreach (var exam in examHistory)
+            foreach (var exam in examHistory.Items)
             {
                 examRecordDtos.Add(new ExamRecordDto()
                 {
@@ -110,7 +116,13 @@ namespace ExamApp.Application.Services
             }
 
             response.Success = true;
-            response.Data = examRecordDtos;
+            response.Data = new PagedResult<ExamRecordDto>
+            {
+                Items = examRecordDtos,
+                PageNumber = examHistory.PageNumber,
+                PageSize = examHistory.PageSize,
+                TotalCount = examHistory.TotalCount
+            };
             return response;
         }
 
