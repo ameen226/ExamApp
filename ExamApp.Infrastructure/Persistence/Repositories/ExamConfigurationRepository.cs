@@ -17,6 +17,11 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
 
         }
 
+        public async Task<bool> ExamConfigurationExists(int subjectId)
+        {
+            return await _db.ExamConfigurations.AnyAsync(ec => ec.SubjectId == subjectId);
+        }
+
         public async Task<ExamConfiguration> GetBySubjectIdAsync(int subjectId)
         {
             return await _db.ExamConfigurations.FirstOrDefaultAsync(ex => ex.SubjectId == subjectId);

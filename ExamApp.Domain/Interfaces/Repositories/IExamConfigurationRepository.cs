@@ -10,5 +10,6 @@ namespace ExamApp.Domain.Interfaces.Repositories
     public interface IExamConfigurationRepository : IGenericRepository<ExamConfiguration>
     {
         Task<ExamConfiguration> GetBySubjectIdAsync(int subjectId);
+        Task<bool> ExamConfigurationExists(int subjectId);
     }
 }

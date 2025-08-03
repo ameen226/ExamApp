@@ -30,9 +30,9 @@ namespace ExamApp.API.Controllers
             var response = await _examConfigurationService.CreateExamConfigurationAsync(subjectId, dto);
 
             if (!response.Success)
-                return BadRequest(response.Message);
+                return BadRequest(response);
 
-            return Ok();
+            return Ok(response);
         }
 
     }

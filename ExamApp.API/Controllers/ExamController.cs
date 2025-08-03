@@ -46,7 +46,7 @@ namespace ExamApp.API.Controllers
             var response = await _examService.SubmitExamAsync(examId, studentId, dto);
 
             if (!response.Success)
-                return BadRequest(response.Errors[0]);
+                return BadRequest(response);
 
             return Ok(response);
         }

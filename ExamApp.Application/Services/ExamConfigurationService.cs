@@ -24,6 +24,15 @@ namespace ExamApp.Application.Services
         {
             var response = new Response<object>();
 
+            var exists = await _unitOfWork.ExamConfigurations.ExamConfigurationExists(subjectId);
+
+            if (exists)
+            {
+                response.Success = false;
+                response.Errors = ["Exam Configuration already exists"];
+                return response;
+            }
+
             ExamConfiguration model = new ExamConfiguration()
             {
                 NumberOfQuestions = dto.NumberOfQuestions,

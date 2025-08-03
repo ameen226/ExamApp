@@ -59,6 +59,8 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
+
+
             student.Subjects.Add(subject);
 
             _unitOfWork.Students.Update(student);

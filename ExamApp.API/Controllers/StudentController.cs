@@ -38,9 +38,9 @@ namespace ExamApp.API.Controllers
             var res = await _studentService.UpdateStudentStatusAsync(id, dto.Enabled);
 
             if (!res.Success)
-                return BadRequest(res.Errors[0]);
+                return BadRequest(res);
 
-            return Ok(res.Message);
+            return Ok(res);
         }
 
         [HttpGet("me/subjects")]
@@ -52,7 +52,7 @@ namespace ExamApp.API.Controllers
             var response = await _studentService.GetAllStudentSubjectsAsync(studentId);
 
             if (!response.Success)
-                return BadRequest(response.Errors[0]);
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -68,9 +68,26 @@ namespace ExamApp.API.Controllers
             var response = await _studentService.AddStudentSubjectAsync(studentId, dto.SubjectId);
 
             if (!response.Success)
-                return BadRequest(response.Errors[0]);
+                return BadRequest(response);
 
-            return Ok(response.Message);
+            return Ok(response);
+        }
+
+
+        [HttpPost("me/subjects/bulk")]
+        [Authorize(Roles = "student")]
+        public async Task<IActionResult> AddMultipleStudentSubjects([FromBody] List<AssignSubjectDto> dtos)
+        {
+            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var results = new List<Response<object>>();
+
+            foreach (var dto in dtos)
+            {
+                var response = await _studentService.AddStudentSubjectAsync(studentId, dto.SubjectId);
+                results.Add(response);
+            }
+
+            return Ok(results);
         }
 
     }

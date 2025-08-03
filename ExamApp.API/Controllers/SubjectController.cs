@@ -24,15 +24,15 @@ namespace ExamApp.API.Controllers
         {
             var response = await _subjectService.GetSubjectByIdAsync(id);
 
-            return Ok(response.Data);
+            return Ok(response);
         }
 
         [HttpGet]
-        [Authorize(Roles ="admin")]
+        [Authorize]
         public async Task<IActionResult> GetAllSubjects()
         {
             var response = await _subjectService.GetAllSubjectsAsync();
-            return Ok(response.Data);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -43,9 +43,9 @@ namespace ExamApp.API.Controllers
             var response = await _subjectService.CreateSubjectAsync(dto);
 
             if (response.Success)
-                return Created();
+                return Ok(response);
 
-            return BadRequest(response.Errors[0]);
+            return BadRequest(response);
         }
 
         [HttpPut("{id}")]
@@ -59,7 +59,7 @@ namespace ExamApp.API.Controllers
             var response = await _subjectService.UpdateSubjectAsync(dto);
 
             if (response.Success)
-                return Ok();
+                return Ok(response);
 
             return BadRequest(response.Errors[0]);
         }
