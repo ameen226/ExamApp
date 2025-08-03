@@ -36,11 +36,11 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
                 .Include(e => e.Subject).ToListAsync();
         }
 
-        public async Task<Exam> GetByIdWithExamQuestionAndQuestionAndAnswers(int id)
+        public async Task<Exam> GetWithExamQuestionAndQuestionAndAnswers(Expression<Func<Exam,bool>> expression)
         {
             return await _db.Exams.Include(e => e.ExamQuestions)
                 .ThenInclude(ex => ex.Question)
-                .ThenInclude(ex => ex.Answers).FirstOrDefaultAsync(e => e.Id == id);
+                .ThenInclude(ex => ex.Answers).FirstOrDefaultAsync(expression);
         }
 
         public async Task<int> ExamCountAsync(Expression<Func<Exam, bool>>? predicate = null)
@@ -49,6 +49,11 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
                 return await _db.Exams.CountAsync(predicate);
 
             return await _db.Exams.CountAsync();
+        }
+
+        public async Task<Exam?> GetExamByStudentIdAndSubjectIdAsync(string studentId, int subjectId)
+        {
+            return await _db.Exams.FirstOrDefaultAsync(e => e.StudentId == studentId && e.SubjectId == subjectId);
         }
     }
 }

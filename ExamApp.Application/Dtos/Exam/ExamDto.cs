@@ -13,5 +13,7 @@ namespace ExamApp.Application.Dtos.Exam
         public int Id { get; set; }
         public string SubjectName { get; set; }
         public ICollection<ExamQuestionDto> ExamQuestions { get; set; }
+        public DateTime StartedAt { get; set; }
+        public TimeSpan Duration { get; set; }
     }
 }

@@ -139,23 +139,51 @@ namespace ExamApp.Application.Services
             }
 
             var subject = await _unitOfWork.Subjects.GetByIdWithQuestionsAsync(dto.SubjectId);
-
+            
             if (subject == null)
             {
                 response.Success = false;
                 response.Errors = ["Subject does not exist"];
                 return response;
             }
+            var examConfig = await _unitOfWork.ExamConfigurations.GetBySubjectIdAsync(dto.SubjectId);
+            var existedExam = await _unitOfWork.Exams
+                .GetWithExamQuestionAndQuestionAndAnswers(e => e.StudentId == studentId && e.SubjectId == dto.SubjectId);
 
-            if (await _unitOfWork.Exams.ExamExistsAsync(dto.SubjectId, studentId))
+            if (existedExam != null && existedExam.Status == ExamStatus.Submitted)
             {
                 response.Success = false;
-                response.Errors = ["Exam already requested"];
+                response.Errors = ["Exam already taken"];
                 return response;
             }
 
-            var examConfig = await _unitOfWork.ExamConfigurations.GetBySubjectIdAsync(dto.SubjectId);
 
+            if (existedExam != null && existedExam.Status != ExamStatus.Submitted)
+            {
+                response.Data =  new ExamDto
+                {
+                    Id = existedExam.Id,
+                    SubjectName = subject.Name,
+                    StartedAt = existedExam.StartedAt,
+                    Duration = examConfig.Duration,
+                    ExamQuestions = existedExam.ExamQuestions.Select(eq => new ExamQuestionDto
+                    {
+                        Id = eq.Id,
+                        QuestionId = eq.QuestionId,
+                        Text = eq.Question.Text,
+                        Answers = eq.Question.Answers.Select(a => new AnswerDto
+                        {
+                            Id = a.Id,
+                            Text = a.Text
+                        }).ToList()
+                    }).ToList()
+                };
+
+                response.Success = true;
+                return response;
+            }
+
+            
             if (examConfig == null)
             {
                 response.Success = false;
@@ -199,7 +227,7 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
-            exam = await _unitOfWork.Exams.GetByIdWithExamQuestionAndQuestionAndAnswers(exam.Id);
+            exam = await _unitOfWork.Exams.GetWithExamQuestionAndQuestionAndAnswers(e => e.Id == exam.Id);
 
             var examQuestionDtos = new List<ExamQuestionDto>();
 
@@ -222,7 +250,9 @@ namespace ExamApp.Application.Services
             {
                 Id = exam.Id,
                 SubjectName = subject.Name,
-                ExamQuestions = examQuestionDtos
+                ExamQuestions = examQuestionDtos,
+                StartedAt = exam.StartedAt,
+                Duration = examConfig.Duration
             };
 
             response.Success = true;
@@ -236,7 +266,7 @@ namespace ExamApp.Application.Services
         {
             Response<object> response = new Response<object>();
 
-            var exam = await _unitOfWork.Exams.GetByIdWithExamQuestionAndQuestionAndAnswers(examId);
+            var exam = await _unitOfWork.Exams.GetWithExamQuestionAndQuestionAndAnswers(e => e.Id == examId);
             
 
             if (exam == null)

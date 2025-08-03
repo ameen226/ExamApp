@@ -31,7 +31,7 @@ namespace ExamApp.API.Controllers
             if (!response.Success)
                 return BadRequest(response.Errors);
 
-            return Ok(response.Data);
+            return Ok(response);
         }
 
         [Authorize(Roles = "student")]
@@ -48,7 +48,7 @@ namespace ExamApp.API.Controllers
             if (!response.Success)
                 return BadRequest(response.Errors[0]);
 
-            return Ok();
+            return Ok(response);
         }
 
         [Authorize(Roles = "admin")]
