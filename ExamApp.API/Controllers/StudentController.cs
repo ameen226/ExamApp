@@ -73,21 +73,17 @@ namespace ExamApp.API.Controllers
             return Ok(response);
         }
 
-
-        [HttpPost("me/subjects/bulk")]
+        [HttpGet("me/subjects/unattemped")]
         [Authorize(Roles = "student")]
-        public async Task<IActionResult> AddMultipleStudentSubjects([FromBody] List<AssignSubjectDto> dtos)
+        public async Task<IActionResult> GetAllUnAttempedStudentSubjects()
         {
-            var studentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var results = new List<Response<object>>();
+            var studentId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _studentService.GetAllStudentUnAttempedSubjectsAsync(studentId);
 
-            foreach (var dto in dtos)
-            {
-                var response = await _studentService.AddStudentSubjectAsync(studentId, dto.SubjectId);
-                results.Add(response);
-            }
+            if (!response.Success)
+                return BadRequest(response);
 
-            return Ok(results);
+            return Ok(response);
         }
 
     }

@@ -18,11 +18,12 @@ namespace ExamApp.Infrastructure.Persistence
         public IStudentRepository Students { get; }
         public ISubjectRepository Subjects { get; }
         public IExamRepository Exams { get; }
+        public IStudentSubjectRepository StudentSubjects { get; }
 
         public UnitOfWork(ApplicationDbContext db, IStudentRepository studentRepository,
             ISubjectRepository subjectRepository, IAnswerRepostiory answerRepostiory, 
             IQuestionRepository questionRepository, IExamConfigurationRepository examConfigurationRepository,
-            IExamRepository examRepository)
+            IExamRepository examRepository, IStudentSubjectRepository studentSubjects)
         {
             Answers = answerRepostiory;
             Questions = questionRepository;
@@ -30,6 +31,7 @@ namespace ExamApp.Infrastructure.Persistence
             Students = studentRepository;
             Subjects = subjectRepository;
             Exams = examRepository;
+            StudentSubjects = studentSubjects;
             _db = db;
         }
 

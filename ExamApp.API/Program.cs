@@ -57,6 +57,7 @@ namespace ExamApp.API
             builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+            builder.Services.AddScoped<IStudentSubjectRepository, StudentSubjectRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 

@@ -24,7 +24,7 @@ namespace ExamApp.Infrastructure.Persistence.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<ExamConfiguration> ExamConfigurations { get; set; }
-
+        public DbSet<StudentSubject> StudentSubjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +53,25 @@ namespace ExamApp.Infrastructure.Persistence.Data
                 .WithMany()
                 .HasForeignKey(eq => eq.QuestionId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<StudentSubject>(entity =>
+            {
+                entity.ToTable("StudentSubject");
+                entity.HasKey(ss => new
+                {
+                    ss.StudentId,
+                    ss.SubjectId
+                });
+
+                entity.HasOne(ss => ss.Subject)
+                .WithMany(s => s.StudentSubjects)
+                .HasForeignKey(ss => ss.SubjectId);
+
+                entity.HasOne(ss => ss.Student)
+                .WithMany(s => s.StudentSubjects)
+                .HasForeignKey(ss => ss.StudentId); 
+
+            });
         }
 
     }

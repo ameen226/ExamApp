@@ -59,11 +59,8 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
+            await _unitOfWork.Students.AddSubjectToStudentAsync(studentId, subjectId);
 
-
-            student.Subjects.Add(subject);
-
-            _unitOfWork.Students.Update(student);
             var res = await _unitOfWork.SaveChangesAsync();
 
             if (res <= 0)
@@ -141,9 +138,34 @@ namespace ExamApp.Application.Services
             return response;
         }
 
-        public Task<Response<StudentDto>> GetStudentByIdAsyn(string studentId)
+        public async Task<Response<IEnumerable<SubjectDto>>> GetAllStudentUnAttempedSubjectsAsync(string studentId)
         {
-            throw new NotImplementedException();
+            var response = new Response<IEnumerable<SubjectDto>>();
+            List<SubjectDto> subjectDtos = new List<SubjectDto>();
+
+            var student = await _unitOfWork.Students.GetByIdAsync(studentId);
+            if (student == null)
+            {
+                response.Success = false;
+                response.Errors = ["Wrong student id"];
+                return response;
+            }
+
+            var subjects = await _unitOfWork.Students.GetStudentUnAttempedSubjectsAsync(studentId);
+
+            foreach (var subject in subjects)
+            {
+                subjectDtos.Add(new SubjectDto()
+                {
+                    Id = subject.Id,
+                    Name = subject.Name
+                });
+            }
+
+
+            response.Success = true;
+            response.Data = subjectDtos;
+            return response;
         }
 
         public async Task<Response<object>> UpdateStudentStatusAsync(string studentId, bool enabled)

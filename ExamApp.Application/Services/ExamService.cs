@@ -310,8 +310,17 @@ namespace ExamApp.Application.Services
 
             exam.Score = (correctAnswersCount / questionsCount) * 100;
 
+
+            var studentSubject = await _unitOfWork.StudentSubjects
+                .GetStudentSubjectAsync(studentId, exam.SubjectId);
+
+            studentSubject.HasAttempedExam = true;
+
+            _unitOfWork.StudentSubjects.Update(studentSubject);
             _unitOfWork.Exams.Update(exam);
             int res = await _unitOfWork.SaveChangesAsync();
+
+
 
             if (res <= 0)
             {

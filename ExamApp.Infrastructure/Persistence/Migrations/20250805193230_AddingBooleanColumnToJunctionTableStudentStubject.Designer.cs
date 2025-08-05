@@ -4,6 +4,7 @@ using ExamApp.Infrastructure.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250805193230_AddingBooleanColumnToJunctionTableStudentStubject")]
+    partial class AddingBooleanColumnToJunctionTableStudentStubject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Exam", b =>
@@ -77,7 +80,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Exams", (string)null);
+                    b.ToTable("Exams");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamConfiguration", b =>
@@ -101,7 +104,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("ExamConfigurations", (string)null);
+                    b.ToTable("ExamConfigurations");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.ExamQuestion", b =>
@@ -130,7 +133,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("ExamQuestions", (string)null);
+                    b.ToTable("ExamQuestions");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Question", b =>
@@ -160,7 +163,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.Student", b =>
@@ -185,7 +188,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("ExamApp.Domain.Entities.StudentSubject", b =>
@@ -220,7 +223,7 @@ namespace ExamApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -33,6 +33,16 @@ namespace ExamApp.Application.Services
                 return response;
             }
 
+            var questionExistedCount = await _unitOfWork.Questions
+                .GetQuestionCountBySubjectIdAsync(subjectId);
+
+            if (questionExistedCount < dto.NumberOfQuestions)
+            {
+                response.Success = false;
+                response.Errors = ["Subject questions count is not sufficient for request"];
+                return response;
+            }
+
             ExamConfiguration model = new ExamConfiguration()
             {
                 NumberOfQuestions = dto.NumberOfQuestions,

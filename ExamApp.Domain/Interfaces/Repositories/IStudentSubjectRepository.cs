@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Domain.Interfaces.Repositories
 {
-    public interface IQuestionRepository : IGenericRepository<Question>
+    public interface IStudentSubjectRepository : IGenericRepository<StudentSubject>
     {
-        Task<int> GetQuestionCountBySubjectIdAsync(int subjectId);
+        Task<StudentSubject?> GetStudentSubjectAsync(string studentId, int subjectId);
     }
 }

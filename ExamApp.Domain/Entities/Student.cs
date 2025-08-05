@@ -16,7 +16,7 @@ namespace ExamApp.Domain.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public bool Enabled { get; set; }
-        public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
+        public ICollection<StudentSubject> StudentSubjects { get; set; }
         public ICollection<Exam> ExamRecords { get; set; } = new List<Exam>();
     }
 }

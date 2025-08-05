@@ -19,12 +19,31 @@ namespace ExamApp.Infrastructure.Persistence.Repositories
 
         }
 
+        public async Task AddSubjectToStudentAsync(string studentId, int subjectId)
+        {
+            await _db.StudentSubjects.AddAsync(new StudentSubject
+            {
+                StudentId = studentId,
+                SubjectId = subjectId
+            });
+        }
+
         public async Task<IEnumerable<Subject>> GetStudentSubjectsAsync(string studentId)
         {
-            var subjects = await _db.Students.Where(s => s.Id == studentId)
-                                             .SelectMany(s => s.Subjects)
-                                             .ToListAsync();
+            var subjects = await _db.StudentSubjects.Where(ss => ss.StudentId == studentId)
+                                                .Include(ss => ss.Subject)
+                                                .Select(ss => ss.Subject)
+                                                .ToListAsync();
+            return subjects;
+        }
 
+        public async Task<IEnumerable<Subject>> GetStudentUnAttempedSubjectsAsync(string studentId)
+        {
+            var subjects = await _db.StudentSubjects.Where(ss => ss.StudentId == studentId 
+                                                           && ss.HasAttempedExam == false)
+                                                .Include(ss => ss.Subject)
+                                                .Select(ss => ss.Subject)
+                                                .ToListAsync();
             return subjects;
         }
 
